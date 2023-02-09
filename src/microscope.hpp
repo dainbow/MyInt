@@ -30,7 +30,7 @@ class Microscope {
         }
 
         std::string GetColor() const {
-            return m_isTmp ? "Red" : "Green";
+            return m_isTmp ? RED : GREEN;
         }
         
         static std::string GetTypename() {
@@ -51,6 +51,7 @@ class Microscope {
             m_isTmp(false),
             m_log("")
         {
+            LOG_FUNC;
             CheckIfNameNull();
 
             m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
@@ -67,6 +68,7 @@ class Microscope {
             m_isTmp(false),
             m_log("")
         {
+            LOG_FUNC;
             const T rememberT = t;
             std::swap(m_data, t);
 
@@ -86,6 +88,7 @@ class Microscope {
             m_isTmp(false),
             m_log("")
         {
+            LOG_FUNC;
             CheckIfNameNull();
 
             m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
@@ -102,6 +105,7 @@ class Microscope {
             m_isTmp(false),
             m_log("")
         {
+            LOG_FUNC;
             std::swap(m_data, tToCopy.m_data);
             CheckIfNameNull();
 
@@ -112,6 +116,7 @@ class Microscope {
     #ifndef DEMO_MODE
         #define REF_OPERATOR(op)                                                        \
             Microscope<T>& operator op (const Microscope<T>& t) {                       \
+                LOG_FUNC;                                                               \
                 m_data op t.m_data;                                                     \
                 Visualiser::GetInstance().ProcessChangingOperator(*this, t, #op);       \
                                                                                         \
@@ -120,6 +125,7 @@ class Microscope {
     #else
         #define REF_OPERATOR(op)                                                        \
             Microscope<T>& operator op (const Microscope<T>& t) {                       \
+                LOG_FUNC;                                                               \
                 if (CheckIfDemo()) {                                                    \
                     return *this;                                                       \
                 }                                                                       \
@@ -143,6 +149,7 @@ class Microscope {
     #undef REF_OPERATOR
 
         Microscope<T>& operator++() {
+            LOG_FUNC;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
                 return *this;
@@ -154,6 +161,7 @@ class Microscope {
         }
 
         Microscope<T> operator++(int) {
+            LOG_FUNC;
             Microscope<T> tmp = *this;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
@@ -167,6 +175,7 @@ class Microscope {
         }
 
         Microscope<T>& operator--() {
+            LOG_FUNC;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
                 return *this;
@@ -178,6 +187,7 @@ class Microscope {
         }
 
         Microscope<T> operator--(int) {
+            LOG_FUNC;
             Microscope<T> tmp = *this;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
@@ -191,6 +201,7 @@ class Microscope {
         }
 
         Microscope<T> operator!() const {
+            LOG_FUNC;
             Microscope<T> tmp = *this;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
@@ -204,6 +215,7 @@ class Microscope {
         }
 
         Microscope<T> operator~() const {
+            LOG_FUNC;
             Microscope<T> tmp = *this;
         #ifdef DEMO_MODE
             if (CheckIfDemo()) {
@@ -217,6 +229,7 @@ class Microscope {
         }
 
         Microscope<T>& operator=(const Microscope<T>& t) {
+            LOG_FUNC;
             m_data = t.m_data;
 
             Visualiser::GetInstance().ProcessEqOperator(*this, t, TransferType::Copy);
@@ -224,6 +237,7 @@ class Microscope {
         }
 
         Microscope<T>& operator=(Microscope<T>&& t) {
+            LOG_FUNC;
             std::swap(m_data, t.m_data);
 
             Visualiser::GetInstance().ProcessEqOperator(*this, t, TransferType::Move);
@@ -233,8 +247,13 @@ class Microscope {
     #ifndef DEMO_MODE
         #define OBJ_CONST_OPERATOR(op)                                                  \
             Microscope<T> operator op (const Microscope<T>& t) const {                  \
+                LOG_FUNC;                                                               \
+                Visualiser::GetInstance().DisableLogging();                             \
                 Microscope<T> tmp = *this;                                              \
+                                                                                        \
                 tmp op##= t;                                                            \
+                Visualiser::GetInstance().EnableLogging();                              \
+                                                                                        \
                 Visualiser::GetInstance().ProcessBinaryOperator(*this, t, tmp, #op);    \
                                                                                         \
                 return tmp;                                                             \
@@ -242,6 +261,7 @@ class Microscope {
     #else
         #define OBJ_CONST_OPERATOR(op)                                                  \
             Microscope<T> operator op (const Microscope<T>& t) const {                  \
+                LOG_FUNC;                                                               \
                 Microscope<T> tmp = *this;                                              \
                 if (CheckIfDemo()) {                                                    \
                     return tmp;                                                         \
