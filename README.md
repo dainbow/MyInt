@@ -44,9 +44,45 @@ If you use this constructor, you can optimize some parts of your codes: actions 
 There are also 4 types of assignment operators which have the same properties as corresponding constructors
 
 # Let's test
-I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/src/main.cpp) to compare const copy constructor and move contructor (I won't test nonconst copy constuctor and const move constructor as they are useless)
+I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/src/main.cpp) to compare const copy constructor and move contructor (I won't test nonconst copy constuctor and const move constructor as they are useless). By <compare const copy constructor and move contructor> I mean program with only const copy constructor written and program with both const copy and move constructor written.
 
 Moreover, we will check impact of <elide-constructors> compilator optimization.
+  
+P.S. Imagine that we perform 100x100 matrices multiplication and every copy constructor takes O(n^2) time when move constructor takes O(1) time.
 
 ## Const copy constructor
 ![Copy](https://github.com/dainbow/MyInt/blob/master/dumps/Copy.png)
+  
+## Const copy + move constructors
+![Move](https://github.com/dainbow/MyInt/blob/master/dumps/Move.png)
+  
+## Const copy + move constructors + optimization
+![MoveOpt](https://github.com/dainbow/MyInt/blob/master/dumps/MoveOptimized.png)
+  
+## Results
+<table>
+    <tr>
+        <th> Test name \ Amount </th>
+        <th> Copy constructors </th>
+        <th> Move constructors </th>
+        <th> Temporary objects </th>
+    </tr>
+    <tr>
+        <td> Const copy ctor </td>
+        <td> 6 </td>
+        <td> 0 </td>
+        <td> 4 </td>
+    </tr>
+    <tr>
+        <td> Const copy + move ctors </td>
+        <td> 0 </td>
+        <td> 6 </td>
+        <td> 4 </td>
+    </tr>
+    <tr>
+        <td> Const copy + move ctors + opt </td>
+        <td> 0 </td>
+        <td> 4 </td>
+        <td> 2 </td>
+    </tr>
+</table>
