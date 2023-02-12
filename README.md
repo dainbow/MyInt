@@ -45,3 +45,8 @@ There are also 4 types of assignment operators which have the same properties as
 
 # Let's test
 I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/src/main.cpp) to compare const copy constructor and move contructor (I won't test nonconst copy constuctor and const move constructor as they are useless)
+
+Moreover, we will check impact of <elide-constructors> compilator optimization.
+
+## Const copy constructor
+![Copy]()
