@@ -19,6 +19,7 @@ void Execute() {
 
     MYINT_DEF(a, 3);
     MYINT_DEF(b, 6);
+    MYINT_DEF(d, 9);
 
-    MYINT_DEF(c, a + b);
+    MYINT_DEF(c, a + b + d);
 }
