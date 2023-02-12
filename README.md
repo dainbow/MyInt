@@ -93,7 +93,6 @@ As we can see, proper using of move semantics will help you to increase performa
 Thanks for reading! I hope that now you will use move semantics and rvalue references in all of your programs 🥇.
   
 If you want to learn more about rvalue references, move semantics and perfect forwarding, I suggest you to read these articles:
-  
 + [A Proposal to Add Move Semantics Support to the C++ Language](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2004/n1690.html](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2002/n1377.htm)
 + [Impact of the rvalue reference on the Standard Library](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2005/n1771.html)
   
