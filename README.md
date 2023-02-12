@@ -49,4 +49,4 @@ I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/src/m
 Moreover, we will check impact of <elide-constructors> compilator optimization.
 
 ## Const copy constructor
-![Copy]()
+![Copy](https://github.com/dainbow/MyInt/blob/master/dumps/Copy.png)
