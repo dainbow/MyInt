@@ -5,13 +5,13 @@ So, I'll tell you more about these things.
 
 # About rvalue references
 Lvalue references has one problem: you can't write
-  int& a = 5;
+  ```int& a = 5;```
 because lvalue reference can be assigned only to lvalue. But if we want to make a reference to a temporary object? Rvalue references'll help up!
 
 # About constructors 
 Since rvalue references were added, there are 4 ways to construct some class T:
-  T(T&)
-  T(const T&)
-  T(T&&)
-  T(const T&&)
+  ```T(T&)``` - nonconst copy consructor
+  ```T(const T&)``` - const copy constructor
+  ```T(T&&)``` - move constructor
+  ```T(const T&&)``` - const move constructor
 
