@@ -1,1 +1,1 @@
-#include "microscope.hpp"
+#include "../include/microscope.hpp"

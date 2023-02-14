@@ -1,5 +1,5 @@
-#include "microscope.hpp"
-#include "visualiser.hpp"
+#include "../include/microscope.hpp"
+#include "../include/visualiser.hpp"
 
 Visualiser* Visualiser::instance = nullptr;
 
@@ -46,6 +46,24 @@ void Visualiser::DisableLogging() {
 
 void Visualiser::EnableLogging() {
     m_enableLogging = true;
+}
+
+void Visualiser::LogFuncEntry(const std::string& funcName) {
+    if (!m_enableLogging) {
+        return;
+    }
+
+    m_file << "subgraph cluster_" << m_funcAmount++ << " {\n";
+    m_file << "label = \"" << funcName << "\"\n";
+    m_file << "bgcolor = \"#b0b0ff40\"\n";
+}
+
+void Visualiser::LogFuncExit() {
+    if (!m_enableLogging) {
+        return;
+    }
+
+    m_file << "}\n";
 }
 
 std::string Visualiser::CreateCtorNode(const std::string& name, const std::string& color) {
@@ -96,4 +114,12 @@ void Visualiser::ProcessEqType(const TransferType& type, std::string& eqColor) {
 
     eqColor = RED;
     m_copyEqAmount++;
+}
+
+FuncLogger::FuncLogger(const std::string& functionName) {
+    Visualiser::GetInstance().LogFuncEntry(functionName);
+}
+
+FuncLogger::~FuncLogger() {
+    Visualiser::GetInstance().LogFuncExit();
 }

@@ -23,25 +23,15 @@ class Visualiser {
         void DisableLogging();
         void EnableLogging();
 
-        void LogFuncEntry(const std::string& funcName) {
-            if (!m_enableLogging) {
-                return;
-            }
-
-            m_file << "subgraph cluster_" << m_funcAmount++ << " {\n";
-            m_file << "label = \"" << funcName << "\"\n";
-        }
-
-        void LogFuncExit() {
-            if (!m_enableLogging) {
-                return;
-            }
-
-            m_file << "}\n";
-        }
+        void LogFuncEntry(const std::string& funcName);
+        void LogFuncExit();
 
         template <class T>
         std::string CreateObjectNode(const Microscope<T>& object) {
+            if (!m_enableLogging) {
+                return "nill";
+            }
+            
             std::string nodeName = Microscope<T>::GetTypename() + std::to_string(m_nodesAmount++);
             if (object.GetName().substr(0, 3) == "tmp") {
                 m_tmpAmount++;
@@ -176,13 +166,8 @@ class Visualiser {
 
 class FuncLogger {
     public:
-        FuncLogger(const std::string& functionName) {
-            Visualiser::GetInstance().LogFuncEntry(functionName);
-        }
-
-        ~FuncLogger() {
-            Visualiser::GetInstance().LogFuncExit();
-        }
+        FuncLogger(const std::string& functionName);
+        ~FuncLogger();
 };
 
 #define LOG_FUNC FuncLogger funcLogger(__PRETTY_FUNCTION__)

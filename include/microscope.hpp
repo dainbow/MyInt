@@ -58,25 +58,22 @@ class Microscope {
             Visualiser::GetInstance().ProcessContruction(t, *this, TransferType::Copy);
         }
 
-        Microscope<T>(T&& t, const std::string& name = "") :
-            m_data(),
-        #ifdef DEMO_MODE
-            m_demoCounter(0),
-        #endif
-            m_name(name),
-            m_dotName(""),
-            m_isTmp(false),
-            m_log("")
-        {
-            LOG_FUNC;
-            const T rememberT = t;
-            std::swap(m_data, t);
+        // Microscope<T>(T&& t, const std::string& name = "") :
+        //     m_data(std::move(t)),
+        // #ifdef DEMO_MODE
+        //     m_demoCounter(0),
+        // #endif
+        //     m_name(name),
+        //     m_dotName(""),
+        //     m_isTmp(false),
+        //     m_log("")
+        // {
+        //     LOG_FUNC;
+        //     CheckIfNameNull();
 
-            CheckIfNameNull();
-
-            m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
-            Visualiser::GetInstance().ProcessContruction(rememberT, *this, TransferType::Move);
-        }
+        //     m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
+        //     Visualiser::GetInstance().ProcessContruction(m_data, *this, TransferType::Move);
+        // }
 
         Microscope<T>(const Microscope<T>& tToCopy, const std::string& name = "")  :
             m_data(tToCopy.m_data),
@@ -95,23 +92,23 @@ class Microscope {
             Visualiser::GetInstance().ProcessContruction(tToCopy, *this, TransferType::Copy);
         }
 
-        Microscope<T>(Microscope<T>&& tToCopy, const std::string& name = "")  :
-            m_data(),
-        #ifdef DEMO_MODE
-            m_demoCounter(0),
-        #endif
-            m_name(name),
-            m_dotName(""),
-            m_isTmp(false),
-            m_log("")
-        {
-            LOG_FUNC;
-            std::swap(m_data, tToCopy.m_data);
-            CheckIfNameNull();
+        // Microscope<T>(Microscope<T>&& tToCopy, const std::string& name = "")  :
+        //     m_data(std::move(tToCopy.m_data)),
+        // #ifdef DEMO_MODE
+        //     m_demoCounter(0),
+        // #endif
+        //     m_name(name),
+        //     m_dotName(""),
+        //     m_isTmp(false),
+        //     m_log("")
+        // {
+        //     LOG_FUNC;
+        //     std::swap(m_data, tToCopy.m_data);
+        //     CheckIfNameNull();
 
-            m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
-            Visualiser::GetInstance().ProcessContruction(tToCopy, *this, TransferType::Move);
-        }
+        //     m_dotName = Visualiser::GetInstance().CreateObjectNode(*this);
+        //     Visualiser::GetInstance().ProcessContruction(tToCopy, *this, TransferType::Move);
+        // }
 
     #ifndef DEMO_MODE
         #define REF_OPERATOR(op)                                                        \
@@ -254,6 +251,7 @@ class Microscope {
                 tmp op##= t;                                                            \
                 Visualiser::GetInstance().EnableLogging();                              \
                                                                                         \
+                tmp.SetDotName(Visualiser::GetInstance().CreateObjectNode(tmp));        \
                 Visualiser::GetInstance().ProcessBinaryOperator(*this, t, tmp, #op);    \
                                                                                         \
                 return tmp;                                                             \

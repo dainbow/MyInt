@@ -1,4 +1,4 @@
-#include "main.hpp"
+#include "../include/move.hpp"
 
 template <class T>
 uint64_t Microscope<T>::tmpCounter = 0;
@@ -16,7 +16,7 @@ int main() {
 
 void Execute() {
     LOG_FUNC;
-
+    
     MYINT_DEF(a, 3);
     MYINT_DEF(b, 6);
     MYINT_DEF(d, 9);

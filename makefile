@@ -5,28 +5,38 @@ CXXFLAGS += -fno-elide-constructors
 LDFLAGS = 
 
 SRCDIRS = ./src/
+TARGETDIRS = ./targets/
 BINDIR = ./bin/
 
 SOURCES = $(shell find $(SRCDIRS)*.cpp)
-OBJECTS = $(addprefix $(BINDIR),$(notdir $(SOURCES:.cpp=.o)))
+TARGETS = $(shell find $(TARGETDIRS)*.cpp)
+
+OBJECTS = $(addprefix $(BINDIR), $(notdir $(SOURCES:.cpp=.o)))
+TARGETOBJECTS = $(addprefix $(BINDIR), $(notdir $(TARGETS:.cpp=.o)))
+
 DEPENDENCES = $(addsuffix .d,$(OBJECTS))
+TARGETDEPENDENCES = $(addsuffix .d,$(TARGETOBJECTS))
 
-EXECUTABLE = MyInt.out
+TARGETSNOEXT =  $(notdir $(TARGETS:.cpp=))
 
-$(EXECUTABLE): $(OBJECTS)
-	@$(CC) $(LDFLAGS) $(OBJECTS) -o $@
+$(TARGETSNOEXT): $(OBJECTS) $(TARGETOBJECTS)
+	@$(CC) $(LDFLAGS) $(OBJECTS) $(BINDIR)$@.o -o $@.out
 
 $(BINDIR)%.o: $(SRCDIRS)%.cpp
 	@$(CC) -MMD -MF $@.d $(CXXFLAGS) $< -o $@
 
+$(BINDIR)%.o: $(TARGETDIRS)%.cpp
+	@$(CC) -MMD -MF $@.d $(CXXFLAGS) $< -o $@
+
 -include $(DEPENDENCES)
+-include $(TARGETDEPENDENCES)
 
 .PHONY: all, clean, mkdirs
 
-all: $(EXECUTABLE)
+all: Library
 
 mkdirs:
-	mkdir $(BINDIR) $(SRCDIRS)
+	mkdir $(BINDIR) $(SRCDIRS) $(TARGETDIRS)
 
 clean: 
-	rm $(OBJECTS) $(DEPENDENCES)
+	rm $(OBJECTS) $(TARGETOBJECTS) $(DEPENDENCES) $(TARGETDEPENDENCES)
