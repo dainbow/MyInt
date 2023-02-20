@@ -44,7 +44,7 @@ If you use this constructor, you can optimize some parts of your codes: actions 
 There are also 4 types of assignment operators which have the same properties as corresponding constructors
 
 # Let's test
-I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/src/main.cpp) to compare const copy constructor and move contructor (I won't test nonconst copy constuctor and const move constructor as they are useless). By <compare const copy constructor and move contructor> I mean program with only const copy constructor written and program with both const copy and move constructor written.
+I've wrote a simple [example](https://github.com/dainbow/MyInt/blob/master/targets/ctors.cpp) to compare const copy constructor and move contructor (I won't test nonconst copy constuctor and const move constructor as they are useless). By <compare const copy constructor and move contructor> I mean program with only const copy constructor written and program with both const copy and move constructor written.
 
 Moreover, we will check impact of <elide-constructors> compilator optimization.
   
@@ -89,8 +89,15 @@ P.S. Imagine that we perform 100x100 matrices multiplication and every copy cons
 
 As we can see, proper using of move semantics will help you to increase performance of your program: decreasing of copy operation is significant! Amount of unnecessary operations tends to zero!
   
+# Proper usage of move/forward
+## To move or not to move
+Sometimes people think if copy constructor is slow so they start using std::move for all objects. But you should keep in mind that after std::move the object becomes invalid. You can check this [example](https://github.com/dainbow/MyInt/blob/master/targets/onlymove.cpp) and get pretty SIGFAULT :)
+
+## Another side of move semantics
+After reading of previous article you may think that std::move is very unsafe and you will never use it. But it's also wrong way: your program will be very slow. You can check this [example](https://github.com/dainbow/MyInt/blob/master/targets/onlyforward.cpp) and see that safe using of std::move can increse you program's performance up to 2 times.
+  
 # Conclusion
-Thanks for reading! I hope that now you will use move semantics and rvalue references in all of your programs 🥇.
+Thanks for reading! I hope that now your programs will be safe and fast 🥇!
   
 If you want to learn more about rvalue references, move semantics and perfect forwarding, I suggest you to read these articles:
 + [A Proposal to Add Move Semantics Support to the C++ Language](https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2002/n1377.htm)
